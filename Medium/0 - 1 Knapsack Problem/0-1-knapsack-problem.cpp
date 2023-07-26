@@ -8,31 +8,35 @@ class Solution
 {
     public:
     int dp[1005][1005];
-    int solve(int idx,int W, int wt[], int val[]){
-        if(idx==0){
-            //if the current item wt is less that W
-            if(wt[0]<=W)return val[0];
-            return 0;
+    int solve(int W, int wt[], int val[],int n){
+        
+        for(int wti=wt[0];wti<=W;++wti){
+            dp[0][wti]=val[0];
         }
-        if(dp[idx][W]!=-1)return dp[idx][W];
         
-        // either we can pick or no pick
-        int nopick=solve(idx-1,W,wt,val);
-        
-        int pick=INT_MIN;
-        
-        if(W-wt[idx]>=0){
-            pick=solve(idx-1,W-wt[idx],wt,val)+val[idx];
+        for(int idx=1;idx<n;++idx){
+            for(int tar=0;tar<=W;++tar){
+                // either we can pick or no pick
+                int nopick=dp[idx-1][tar];
+                
+                int pick=INT_MIN;
+                
+                if(tar-wt[idx]>=0){
+                    pick=dp[idx-1][tar-wt[idx]]+val[idx];
+                }
+                dp[idx][tar]= max(pick,nopick);
+            }
         }
-        return dp[idx][W]= max(pick,nopick);
+        return dp[n-1][W];
+
     }
     //Function to return max value that can be put in knapsack of capacity W.
     int knapSack(int W, int wt[], int val[], int n) 
     { 
        // Your code here
-       memset(dp,-1,sizeof(dp));
+       memset(dp,0,sizeof(dp));
        
-       return solve(n-1,W,wt,val);
+       return solve(W,wt,val,n);
     }
 };
 
