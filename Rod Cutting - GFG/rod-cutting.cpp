@@ -12,12 +12,8 @@ class Solution{
   public:
   int get_maxvalue(int idx,int target,int value[],vector<vector<int>>&dp){
       // base case 
-      if(target==0){
-          return 0;
-      }
-      
-      if(idx<0){
-          return 0;
+      if(idx==0){
+          return target*value[0];
       }
 
       // take or no take case
@@ -36,6 +32,7 @@ class Solution{
         return get_maxvalue(n-1,n,price,dp);
     }
 };
+
 
 //{ Driver Code Starts.
 
